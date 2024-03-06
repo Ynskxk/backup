@@ -17,3 +17,7 @@ if [ $? -eq 0 ]; then
 else
     echo "MySQL yedekleme sırasında bir hata oluştu."
 fi
+
+#pull request deneme için yazdıgım satırların ilki
+#buda ikincisi
+[yunus emre küçük] (https:github.com/ynskxk)
