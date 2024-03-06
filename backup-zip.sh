@@ -1,8 +1,8 @@
 #!/bin/bash
 #set -x
 # MySQL bağlantı bilgileri
-DB_USER="root"
-DB_PASSWORD="my-secret=pw"
+DB_USER=$1
+DB_PASSWORD=$2
 
 # Yedekleme dizini ve dosya adı
 BACKUP_DIR="/dockertest/mydb-backups"
@@ -18,6 +18,3 @@ else
     echo "MySQL yedekleme sırasında bir hata oluştu."
 fi
 
-#pull request deneme için yazdıgım satırların ilki
-#buda ikincisi
-[yunus emre küçük] (https:github.com/ynskxk)
