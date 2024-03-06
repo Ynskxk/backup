@@ -1,8 +1,14 @@
 #!/bin/bash
 #set -x
 # MySQL bağlantı bilgileri
-DB_USER="root"
-DB_PASSWORD="my-secret=pw"
+DB_USER=$1
+DB_PASSWORD=$2
+
+if [ -z "$DB_USER" ] || [ -z "$DB_PASSWORD" ]; then
+    echo "WARNING: One or more parameters are empty."
+    echo "Usage: $0 <DB_USER> <DB_PASSWORD>"
+    exit 1
+fi
 
 # Yedekleme dizini ve dosya adı
 BACKUP_DIR="/dockertest/mydb-backups"
@@ -18,6 +24,3 @@ else
     echo "MySQL yedekleme sırasında bir hata oluştu."
 fi
 
-#pull request deneme için yazdıgım satırların ilki
-#buda ikincisi
-[yunus emre küçük] (https:github.com/ynskxk)
