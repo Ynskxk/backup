@@ -4,6 +4,12 @@
 DB_USER=$1
 DB_PASSWORD=$2
 
+if [ -z "$DB_USER" ] || [ -z "$DB_PASSWORD" ]; then
+    echo "WARNING: One or more parameters are empty."
+    echo "Usage: $0 <DB_USER> <DB_PASSWORD>"
+    exit 1
+fi
+
 # Yedekleme dizini ve dosya adı
 BACKUP_DIR="/dockertest/mydb-backups"
 DATE=$(date +"%Y-%m-%d")
