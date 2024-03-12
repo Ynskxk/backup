@@ -17,7 +17,7 @@ jobs:
       run: docker build -t sehvenider/s:1.0.5 .
 
     - name: Run MySQL container
-      run: docker run --name mysql-container -e MYSQL_ROOT_PASSWORD=password -d sehvenider/s:1.0.5
+      run: docker run -d --name mycontainer -p 80:80 sehvenider/s:1.0.5
 
     - name: Wait for MySQL to start
       run: sleep 30s
