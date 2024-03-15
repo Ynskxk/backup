@@ -12,6 +12,7 @@ fi
 
 # Yedekleme dizini ve dosya adı
 BACKUP_DIR="/dockertest/mydb-backups"
+mkdir -p $BACKUP_DIR
 DATE=$(date +"%Y-%m-%d")
 COMPRESSED_FILE="$BACKUP_DIR/mysql_backup_$DATE.gz"
 
@@ -22,5 +23,6 @@ if [ $? -eq 0 ]; then
     echo "MySQL yedekleme başarıyla alındı: $COMPRESSED_FILE"
 else
     echo "MySQL yedekleme sırasında bir hata oluştu."
+    exit 1
 fi
 
