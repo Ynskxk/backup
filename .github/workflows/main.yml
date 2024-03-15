@@ -23,7 +23,7 @@ jobs:
       run: sleep 30s
 
     - name: Run script in Docker container
-      run: docker exec -it mycontainer backup-zip.sh root secret
+      run: docker exec mycontainer backup-zip.sh root secret
 
     - name: Clean up Docker resources
       run: docker stop mysql-container && docker rm mysql-container
