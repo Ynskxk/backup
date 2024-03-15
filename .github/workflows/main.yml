@@ -20,11 +20,11 @@ jobs:
       run: docker run --name mycontainer -e MYSQL_ROOT_PASSWORD="secret" -d sehvenider/s:1.0.5
 
     - name: Wait for MySQL to start
-      run: sleep 30s
+      run: sleep 5s
 
     - name: Run script in Docker container
       run: docker exec mycontainer backup-zip.sh root secret
 
     - name: Clean up Docker resources
-      run: docker stop mysql-container && docker rm mysql-container
+      run: docker stop mycontainer && docker rm mycontainer
   
