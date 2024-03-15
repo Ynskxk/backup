@@ -17,13 +17,13 @@ jobs:
       run: docker build -t sehvenider/s:1.0.5 .
 
     - name: Run MySQL container
-      run: docker run -d --name mycontainer -p 80:80 sehvenider/s:1.0.5
+      run: docker run --name mycontainer -e MYSQL_ROOT_PASSWORD="secret" -d sehvenider/s:1.0.5
 
     - name: Wait for MySQL to start
       run: sleep 30s
 
     - name: Run script in Docker container
-      run: docker exec -it backup-zip.sh
+      run: docker exec -it mycontainer backup-zip.sh root secret
 
     - name: Clean up Docker resources
       run: docker stop mysql-container && docker rm mysql-container
