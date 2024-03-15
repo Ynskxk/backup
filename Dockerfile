@@ -7,4 +7,3 @@ RUN chmod +x  /bin/backup-zip.sh
 
 # MySQL servisini başlat
 CMD ["mysqld"]
-qu
