@@ -1,5 +1,4 @@
 #!/bin/bash
-#set -x
 # MySQL bağlantı bilgileri
 DB_USER=$1
 DB_PASSWORD=$2
@@ -14,13 +13,24 @@ fi
 BACKUP_DIR="/dockertest/mydb-backups"
 mkdir -p $BACKUP_DIR
 DATE=$(date +"%Y-%m-%d")
-COMPRESSED_FILE="$BACKUP_DIR/mysql_backup_$DATE.gz"
+BACKUP_DIR="$BACKUP_DIR/$DATE"
 
-# MySQL yedekleme komutu
-mysqldump -u$DB_USER -p$DB_PASSWORD --all-databases | gzip > $COMPRESSED_FILE
+# xtrabackup için gerekli dizin kontrolü
+if [ ! -d "$BACKUP_DIR" ]; then
+    mkdir -p "$BACKUP_DIR"
+else
+    rm -rf "$BACKUP_DIR"/*
+fi
+
+# xtrabackup komutu
+xtrabackup --user=$DB_USER --password=$DB_PASSWORD --backup --target-dir=$BACKUP_DIR
+
 # Başarılı olup olmadığını kontrol et
 if [ $? -eq 0 ]; then
-    echo "MySQL yedekleme başarıyla alındı: $COMPRESSED_FILE"
+    # qpress ile sıkıştırma
+    qpress -v $BACKUP_DIR $BACKUP_DIR.qp
+    rm -rf $BACKUP_DIR
+    echo "MySQL yedekleme başarıyla alındı ve sıkıştırıldı: $BACKUP_DIR.qp"
 else
     echo "MySQL yedekleme sırasında bir hata oluştu."
     exit 1

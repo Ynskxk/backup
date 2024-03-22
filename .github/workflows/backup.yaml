@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-and-test:
-    runs-on: 8.0.36-debian
+    runs-on: ubuntu:latest
 
     steps:
     - name: Checkout repository
