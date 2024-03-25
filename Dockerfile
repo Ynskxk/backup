@@ -7,8 +7,9 @@ RUN apt-get update && apt-get install -y vim percona-toolkit lsb-release wget cu
 RUN apt-get update && apt-get install -y percona-xtrabackup-80 
 RUN apt-get update && apt-get install qpress -y
 
-COPY backup-w-mx.sh /bin/
-RUN chmod +x  /bin/backup-w-mx.sh  
+COPY backup-zip.sh backup-w-mx.sh /bin/
+RUN chmod +x  /bin/backup-w-mx.sh \
+    && chmod +x  /bin/backup-zip.sh  
     
 
 # MySQL servisini başlat
