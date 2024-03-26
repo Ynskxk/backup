@@ -1,6 +1,5 @@
 #!/bin/bash
-#set -x
-# MySQL bağlantı bilgileri
+# MySQL connection information
 DB_USER=$1
 DB_PASSWORD=$2
 
@@ -10,18 +9,18 @@ if [ -z "$DB_USER" ] || [ -z "$DB_PASSWORD" ]; then
     exit 1
 fi
 
-# Yedekleme dizini ve dosya adı
+# Backup directory and file name
 BACKUP_DIR="/dockertest/mydb-backups"
 mkdir -p $BACKUP_DIR
 DATE=$(date +"%Y-%m-%d")
 COMPRESSED_FILE="$BACKUP_DIR/mysql_backup_$DATE.gz"
 
-# MySQL yedekleme komutu
+# MySQL backup command
 mysqldump -u$DB_USER -p$DB_PASSWORD --all-databases | gzip > $COMPRESSED_FILE
-# Başarılı olup olmadığını kontrol et
+# Check if the backup was successful
 if [ $? -eq 0 ]; then
-    echo "MySQL yedekleme başarıyla alındı: $COMPRESSED_FILE"
+    echo "MySQL backup was successfully created: $COMPRESSED_FILE"
 else
-    echo "MySQL yedekleme sırasında bir hata oluştu."
+    echo "An error occurred during MySQL backup."
     exit 1
 fi
