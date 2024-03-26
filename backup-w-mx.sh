@@ -12,7 +12,7 @@ fi
 # Creating a new database in MySQL
 echo "database user= $DB_USER"
 echo "$DB_PASSWORD"
-mysql -u$DB_USER -p$DB_PASSWORD -e "CREATE DATABASE IF NOT EXISTS testdb;"
+#mysql -u$DB_USER -p$DB_PASSWORD -e "CREATE DATABASE IF NOT EXISTS testdb;"
 
 # Checking if successful
 if [ $? -gt 0 ]; then
