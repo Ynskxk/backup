@@ -1,65 +1,60 @@
 #!/bin/bash
-# MySQL bağlantı bilgileri
+# MySQL connection credentials
 DB_USER=$1
 DB_PASSWORD=$2
 
 if [ -z "$DB_USER" ] || [ -z "$DB_PASSWORD" ]; then
-    echo "WARNING: One or more parameters are empty."
-    echo "Usage: $0 <DB_USER> <DB_PASSWORD>"
+    echo "UYARI: Bir veya daha fazla parametre boş."
+    echo "Kullanım: $0 <DB_USER> <DB_PASSWORD>"
     exit 1
 fi
 
-# MySQL'de yeni bir veritabanı oluşturma
+# Creating a new database in MySQL
 mysql -u root -p$DB_PASSWORD -e "CREATE DATABASE IF NOT EXISTS testdb;"
 
-# Başarılı olup olmadığını kontrol et
+# Checking if successful
 if [ $? -gt 0 ]; then
-    echo "mysql testdb database'i oluşturulamadı."
+    echo "Failed to create mysql testdb database."
     exit 1
 fi
 
-# sysbench ile test veritabanını hazırlama
+# Prepare test database with sysbench
 sysbench oltp_read_write --mysql-user=$DB_USER --mysql-password=$DB_PASSWORD --mysql-db=testdb --tables=10 --table-size=10000 prepare
 
-# Başarılı olup olmadığını kontrol et
+# Checking if successful
 if [ $? -eq 0 ]; then
-    # Başarı mesajını güncelle
-    echo "sysbench ile test verisi oluşturuldu"
+    echo "Test data generated with sysbench successfully"
 else
-    echo "sysbench ile test verisi oluşturulamadı."
+    echo "Failed to generate test data with sysbench."
     exit 1
 fi
-# Yedekleme dizini ve dosya adı
+
+# Backup directory and file name
 BACKUP_DIR="/dockertest/mydb-backups/$(date +"%Y-%m-%d")"
 mkdir -p $BACKUP_DIR
 BACKUP_FILE=testdb_backup.sql.gz
 
-
-# mysqldump komutu
+# mysqldump command
 mysqldump --user=$DB_USER --password=$DB_PASSWORD --databases testdb | gzip > $BACKUP_DIR/$BACKUP_FILE
 
-
-# Başarılı olup olmadığını kontrol et
+# Checking if successful
 if [ $? -eq 0 ]; then
-    # Başarı mesajını güncelle
-    echo "mysqldump ile MySQL yedekleme başarıyla alındı: $BACKUP_DIR/$BACKUP_FILE"
+    echo "MySQL backup taken successfully with mysqldump: $BACKUP_DIR/$BACKUP_FILE"
 else
-    echo "mysqldump ile yedekleme sırasında bir hata oluştu."
+    echo "An error occurred during mysqldump backup."
     exit 1
 fi
 
-# xtrabackup için gerekli dizin kontrolü
-
+# Checking necessary directory for xtrabackup
 mkdir -p "$BACKUP_DIR"
 
-# xtrabackup komutu
+# xtrabackup command
 xtrabackup --user=$DB_USER --password=$DB_PASSWORD --backup --compress --target-dir=$BACKUP_DIR
 
-# Başarılı olup olmadığını kontrol et
+# Checking if successful
 if [ $? -eq 0 ]; then
-    # qpress ile sıkıştırma
-    echo "xtrabackup ile MySQL yedekleme başarıyla alındı ve sıkıştırıldı: $BACKUP_DIR.qp"
+    echo "MySQL backup taken successfully and compressed with xtrabackup: $BACKUP_DIR.qp"
 else
-    echo "xtrabackup ile MySQL yedekleme sırasında bir hata oluştu."
+    echo "An error occurred during MySQL backup with xtrabackup."
     exit 1
 fi
