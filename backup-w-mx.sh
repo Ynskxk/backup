@@ -11,7 +11,7 @@ if [ -z "$DB_USER" ] || [ -z "$DB_PASSWORD" ]; then
 fi
 
 # Creating a new database in MySQL
- mysql -u$DB_USER -p$DB_PASSWORD -e "CREATE DATABASE IF NOT EXISTS testdb;"
+ mysql -e "CREATE DATABASE IF NOT EXISTS testdb;"
 
 # Checking if successful
 if [ $? -gt 0 ]; then
