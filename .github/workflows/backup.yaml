@@ -18,7 +18,7 @@ jobs:
     - name: Build Docker image
       run: docker build -t sehvenider/mysql-backup-test:1.0.1 .
     - name: Run MySQL container
-      run: docker run --name mycontainer -e MYSQL_ALLOW_EMPTY_PASSWORD=yes --max-allowed-packet=1073741824 -d sehvenider/mysql-backup-test:1.0.1
+      run: docker run --name mycontainer -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -d sehvenider/mysql-backup-test:1.0.1 --max-allowed-packet=1073741824
 
     - name: Wait for MySQL to start
       run: sleep 5s
