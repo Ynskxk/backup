@@ -11,7 +11,7 @@ if [ $? -gt 0 ]; then
 fi
 
 # Prepare test database with sysbench
-sysbench oltp_read_write --mysql-user=root --mysql-db=testdb --tables=10 --table-size=100 prepare
+sysbench oltp_read_write --mysql-user=root --mysql-db=testdb --tables=10 --table-size=1000 prepare
 
 # Checking if successful
 if [ $? -eq 0 ]; then
