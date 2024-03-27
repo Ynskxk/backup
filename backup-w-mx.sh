@@ -1,14 +1,5 @@
 #!/bin/bash
 set -o pipefail
-# MySQL connection credentials
-DB_USER=$1
-DB_PASSWORD=$2
-
-if [ -z "$DB_USER" ] || [ -z "$DB_PASSWORD" ]; then
-    echo "UYARI: Bir veya daha fazla parametre boş."
-    echo "Kullanım: $0 <DB_USER> <DB_PASSWORD>"
-    exit 1
-fi
 
 # Creating a new database in MySQL
  mysql -e "CREATE DATABASE IF NOT EXISTS testdb;"
@@ -20,7 +11,7 @@ if [ $? -gt 0 ]; then
 fi
 
 # Prepare test database with sysbench
-sysbench oltp_read_write --mysql-user=$DB_USER --mysql-password=$DB_PASSWORD --mysql-db=testdb --tables=10 --table-size=10000 prepare
+sysbench oltp_read_write --mysql-db=testdb --tables=10 --table-size=10000 prepare
 
 # Checking if successful
 if [ $? -eq 0 ]; then
@@ -36,7 +27,7 @@ mkdir -p $BACKUP_DIR
 BACKUP_FILE=testdb_backup.sql.gz
 
 # mysqldump command
-mysqldump --user=$DB_USER --password=$DB_PASSWORD --databases testdb | gzip > $BACKUP_DIR/$BACKUP_FILE
+mysqldump --databases testdb | gzip > $BACKUP_DIR/$BACKUP_FILE
 
 # Checking if successful
 if [ $? -eq 0 ]; then
@@ -50,7 +41,7 @@ fi
 mkdir -p "$BACKUP_DIR"
 
 # xtrabackup command
-xtrabackup --user=$DB_USER --password=$DB_PASSWORD --backup --compress --target-dir=$BACKUP_DIR
+xtrabackup --backup --compress --target-dir=$BACKUP_DIR
 
 # Checking if successful
 if [ $? -eq 0 ]; then
