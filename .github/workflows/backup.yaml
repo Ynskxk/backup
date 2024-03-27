@@ -13,14 +13,12 @@ jobs:
       uses: actions/checkout@v2
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
-    - name: Docker Run Action
-      uses: addnab/docker-run-action@v3         
+   
 
     - name: Build Docker image
       run: docker build -t sehvenider/mysql-backup-test:1.0.1 .
-
     - name: Run MySQL container
-      run: docker run --name mycontainer -e MYSQL_ROOT_PASSWORD=secret -d sehvenider/mysql-backup-test:1.0.1
+      run: docker run --name mycontainer -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -d sehvenider/mysql-backup-test:1.0.1
 
     - name: Wait for MySQL to start
       run: sleep 5s
