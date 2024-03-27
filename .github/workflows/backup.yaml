@@ -24,7 +24,7 @@ jobs:
       run: sleep 5s
 
     - name: Run script in Docker container
-      run: docker exec mycontainer backup-w-mx.sh root secret
+      run: docker exec mycontainer backup-w-mx.sh 
 
     - name: Clean up Docker resources
       run: docker stop mycontainer && docker rm mycontainer
