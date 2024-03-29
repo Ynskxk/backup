@@ -13,10 +13,10 @@ RUN apt-get update && apt-get install -y percona-xtrabackup-80
 RUN apt-get update && apt-get install qpress -y
 
 # Copy backup scripts to the /bin directory inside the container
-COPY backup-zip.sh backup-w-mx.sh /bin/
+COPY backup-zip.sh backup.sh /bin/
 
 # Set execute permissions for backup scripts
-RUN chmod +x  /bin/backup-w-mx.sh \
+RUN chmod +x  /bin/backup.sh \
     && chmod +x  /bin/backup-zip.sh  
 
 # Command to start MySQL service when the container starts
