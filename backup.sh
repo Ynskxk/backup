@@ -47,6 +47,6 @@ xtrabackup --backup --compress --target-dir=$BACKUP_DIR
 if [ $? -eq 0 ]; then
     echo "MySQL backup taken successfully and compressed with xtrabackup: $BACKUP_DIR.qp"
 else
-    echo "An error occurred during MySQL backup with xtrabackup."
+    echo "An error occurred during MySQL backup with xtrabackup. "
     exit 1
 fi
